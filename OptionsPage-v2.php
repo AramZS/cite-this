@@ -21,10 +21,24 @@
 						settings_fields('citethis_options'); ?>
 					<?php //Initiate a check on the settings to insure they are safe. 
 						do_settings_sections('citethis_checks');
+						//The submit button.
 					?>
+					<br />
+					<input name="Submit" type="submit" value="<?php esc_attr_e('Save Changes'); ?>" />
+				</form>
+				
+				<p>Origonally created by Yu-Jie Lin. Updated by Aram Zucker-Scharff</p>
 			</div>
 		
 		<?php
+	
+	}
+	
+	//Let's initate the options for this plugin.
+	add_action('admin_init', 'citethis_admin_init');
+	function citethis_admin_init(){
+	
+		
 	
 	}
 
