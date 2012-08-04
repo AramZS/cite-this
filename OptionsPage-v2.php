@@ -62,7 +62,7 @@
 	
 	function add_jquery() {
 		?>	
-				<script type="text/javascript">
+		<script type="text/javascript">
 			//<![CDATA[
 		jQuery('#citationStyles').Sortable({
 			accept : 'citation',
@@ -106,15 +106,15 @@
 			form.submit();
 			}
 			//]]>
-			</script>
+	</script>
 			<?php 
 	}
-function CTAddOptionsJS() {
-    wp_print_scripts(array('interface'));
+	function CTAddOptionsJS() {
+		wp_print_scripts(array('interface'));
     }
-function CTAddOptionsStyle() {
-    echo '<link rel="stylesheet" href="' . get_bloginfo('wpurl') . '/wp-content/plugins/CiteThis/OptionsPage.css" type="text/css"/>';
+	function CTAddOptionsStyle() {
+		echo '<link rel="stylesheet" href="' . get_bloginfo('wpurl') . '/wp-content/plugins/CiteThis/OptionsPage.css" type="text/css"/>';
     }
-// Add JS and stylesheet
+	// Add JS and stylesheet
 
 ?>
