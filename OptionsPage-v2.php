@@ -59,5 +59,62 @@
 		echo '<p>Manage the settings for Cite This</p>';
 	
 	}
+	
+	function add_jquery() {
+		?>	
+				<script type="text/javascript">
+			//<![CDATA[
+		jQuery('#citationStyles').Sortable({
+			accept : 'citation',
+			handle : '.handle',
+			opacity: 	0.5,
+			fit :	false
+			})
+
+		function RemoveCitation(citation){
+			jQuery('#'+citation.id).remove();
+			}
+
+		function AddCitation(){
+			var id;
+			do {
+				id = 'citation-' + Math.round(10000*Math.random()).toString();
+			} while (jQuery('#'+id).size()>0);
+			
+			var newCitation = '<div class="citation" id="' + id + '">\n' +
+							  '<span class="handle">&#11021;<\/span>\n' +
+							  '<select name="' + id + '-show"><option value="false">Hide<\/option><option selected="selected" value="true" >Show<\/option><\/select>\n' +
+							  '<input name="' + id + '-id" type="text" size="10" value=""\/>\n' +
+							  '<input name="' + id + '-name" type="text" size="10" value=""\/>\n' +
+							  '<input name="' + id + '-styleURI" type="text" size="30" value=""\/>\n' +
+							  '<input name="' + id + '-style" type="text" size="30" value=""\/>\n' +
+							  '<input type="button" value="Remove" onclick="RemoveCitation(this.parentNode)"\/>\n' +
+							  '<\/div>';
+			jQuery('#citationStyles')
+				.append(newCitation)
+				.SortableAddItem(document.getElementById(id));
+			}
+			
+		function SubmitCitationStyles(form) {
+			var serial = jQuery.SortSerialize('citationStyles');
+			form.updateCitationStyles.value = 'Save';
+			form.order.value = serial.o['citationStyles'].join(',');
+			form.submit();
+			}
+		function ResetCitationStyles(form) {
+			form.updateCitationStyles.value = 'Reset';
+			form.submit();
+			}
+			//]]>
+			</script>
+			<?php 
+	}
+function CTAddOptionsJS() {
+    wp_print_scripts(array('interface'));
+    }
+function CTAddOptionsStyle() {
+    echo '<link rel="stylesheet" href="' . get_bloginfo('wpurl') . '/wp-content/plugins/CiteThis/OptionsPage.css" type="text/css"/>';
+    }
+// Add JS and stylesheet
 
 ?>
