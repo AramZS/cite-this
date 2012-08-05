@@ -22,8 +22,13 @@
 					<?php //Initiate the option sets. 
 						do_settings_sections('citethis_manager');
 						do_settings_sections('citethis_styles');
-						do_settings_sections('citethis_generals');						
+						do_settings_sections('citethis_generals');
+						do_settings_sections('citethis_citations');
 						//Then the submit button.
+						
+						//jQuery code to make it function.
+						//add_jquery();
+						//CTAddOptionsJS();
 					?>
 					<br />
 					<input name="Submit" type="submit" value="<?php esc_attr_e('Save Changes'); ?>" />
@@ -127,6 +132,17 @@
 	function CTAddOptionsJS() {
 		wp_print_scripts(array('interface'));
     }
+	
+	//Alternate method for attaching scripts. 
+	function citethis_admin_enqueue_scripts( $hook_suffix ) {
+		if( 'options-general.php?page=citethis' != $hook_suffix )
+			return;
+		wp_enqueue_style( 'citethis-theme-options', get_plugin_directory_uri() . '/wp-content/plugins/CiteThis/OptionsPage.css', false, '1.0' );
+
+		wp_enqueue_script('interface');
+	}
+	add_action( 'admin_enqueue_scripts', 'citethis_admin_enqueue_scripts' );	 //not sure about this hook yet. 
+	
 	function CTAddOptionsStyle() {
 		echo '<link rel="stylesheet" href="' . get_bloginfo('wpurl') . '/wp-content/plugins/CiteThis/OptionsPage.css" type="text/css"/>';
     }
