@@ -48,10 +48,25 @@
 			//The id for the reset button, The reset button label, the function to generate the reset button, the settings section call, the settings section name
 			add_settings_section('citethis_reset_button', 'Reset Settings', 'citethis_reset_gen', 'citethis_manager', 'citethis_manage');
 			add_settings_section('citethis_institution_field', 'Institution associated with this blog', 'citethis_institution_entry', 'citethis_manager', 'citethis_manage');
+		
 		add_settings_section('citethis_stylelist', 'Tags for Citation Styles', 'citethis_styles_text', 'citethis_styles');
 			add_settings_section('citethis_style_list', ' ', 'citethis_stylelister', 'citethis_styles', 'citethis_stylelist');
+		
 		add_settings_section('citethis_general', 'General Options', 'citethis_general_text', 'citethis_generals');
-			add_settings_section('citethis_single_mode', 'Providing method in Single Post Mode', 'citethis_singlemode_gen', 'citethis_generals', 'citethis_general');	
+			add_settings_section('citethis_single_mode', 'Providing method in Single Post Mode', 'citethis_singlemode_gen', 'citethis_generals', 'citethis_general');
+			add_settings_section('citethis_single_setting', 'Settings for Single Post Mode', 'citethis_singlesetting_gen', 'citethis_generals', 'citethis_general');
+			
+			add_settings_section('citethis_multi_mode', 'Providing method in Multi-Post Mode', 'citethis_multimode_gen', 'citethis_generals', 'citethis_general');
+			add_settings_section('citethis_multi_setting', 'Settings for Multi-Post Mode', 'citethis_multisetting_gen', 'citethis_generals', 'citethis_general');
+			
+			add_settings_section('citethis_widget_setting', 'Settings for Widget Mode', 'citethis_widgetsetting_gen', 'citethis_generals', 'citethis_general');
+			
+			add_settings_section('citethis_button_set', ' ', 'citethis_buttonset_gen', 'citethis_manager', 'citethis_manage');
+		
+		add_settings_section('citethis_citation', 'Citation Styles', 'citethis_citation_text', 'citethis_citations');	
+			add_settings_section('citethis_citations_set', ' ', 'citethis_citations_gen', 'citethis_citations', 'citethis_citation');
+			add_settings_section('citethis_button_set', ' ', 'citethis_buttonset_gen', 'citethis_citations', 'citethis_citation');
+			
 	}
 	
 	function citethis_manage_text() {
