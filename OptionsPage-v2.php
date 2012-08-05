@@ -80,6 +80,42 @@
 	
 	}
 	
+	function citethis_stylelister() {
+	
+		?>
+		
+            <fieldset id="tagsCitationStyles" class="dbx-box">
+                <h3 class="dbx-handle">Tags for Citation Styles</h3>
+                    <div class="dbx-content">
+                        <dl>
+                        <dt>%pagename%</dt>
+                        <dd>The post title.</dd>
+                        <dt>%author%</dt>
+                        <dd>Name of post's author.</dd>
+                        <dt>%publisher%</dt>
+                        <dd>This blog's name.</dd>
+                        <dt>%institution%</dt>
+                        <dd>Institution associated with this blog.</dd>
+                        <dt>%date:format%</dt>
+                        <dd>Published date or last updated date. <a href="http://www.php.net/date">format</a></dd>
+                        <dt>%retdate:format%</dt>
+                        <dd>Requesting date. <a href="http://www.php.net/date">format</a></dd>
+                        <dt>%permalink%</dt>
+                        <dd>URI to the post.</dd>
+                        <dt>&amp;lt;</dt>
+                        <dd>Display &lt;</dd>
+                        <dt>&amp;gt;</dt>
+                        <dd>Display &gt;</dd>
+                        <dt>&amp;#39;</dt>
+                        <dd>Display &#39; (single quote)</dd>
+                        </dl>
+                    </div>
+            </fieldset>			
+		
+		<?php
+	
+	}
+	
 	function add_jquery() {
 		?>	
 		<script type="text/javascript">
