@@ -1,10 +1,13 @@
 <?php
 
+	$gOptions = get_option('citethis_options');
+	print_r('test:' . $gOptions);
+	
 	//Let's build a modern options page. 
 	add_action('admin_menu', 'citethis_admin_page');
 	function citethis_admin_page() {
 		//Add that options page title, menu item title, user level required to use, the options slug, the output function
-		add_options_page('Cite This Plugin Options', 'Cite This Options', 'manage_options', 'citethis', 'citethis_options_page')
+		add_options_page('Cite This Plugin Options', 'Cite This Options', 'manage_options', 'citethis', 'citethis_options_page');
 	
 	}
 	
@@ -21,9 +24,9 @@
 						settings_fields('citethis_options'); ?>
 					<?php //Initiate the option sets. 
 						do_settings_sections('citethis_manager');
-						do_settings_sections('citethis_styles');
-						do_settings_sections('citethis_generals');
-						do_settings_sections('citethis_citations');
+						//do_settings_sections('citethis_styles');
+						//do_settings_sections('citethis_generals');
+						//do_settings_sections('citethis_citations');
 						//Then the submit button.
 						
 						//jQuery code to make it function.
@@ -38,7 +41,19 @@
 			</div>
 		
 		<?php
-	
+/**		
+		if ( 'reset' == $_REQUEST['action'] ) {
+			//protext against request forgery
+			check_admin_referer('citethis-reset');
+			//delete the options
+			foreach ($gOptions as $value) {
+				delete_option( $value['id'] ); }
+				
+				header("Location: options-general.php?page=citethis&reset=true");
+				die;
+				
+		}
+**/	
 	}
 	
 	//Let's initate the options for this plugin.
@@ -51,12 +66,12 @@
 		add_settings_section('citethis_manage', 'Manage Cite This', 'citethis_manage_text', 'citethis_manager');
 			//The first entry in the manage section of the admin page.
 			//The id for the reset button, The reset button label, the function to generate the reset button, the settings section call, the settings section name
-			add_settings_section('citethis_reset_button', 'Reset Settings', 'citethis_reset_gen', 'citethis_manager', 'citethis_manage');
-			add_settings_section('citethis_institution_field', 'Institution associated with this blog', 'citethis_institution_entry', 'citethis_manager', 'citethis_manage');
-		
+			//add_settings_field('citethis_reset_button', 'Reset Settings', 'citethis_reset_gen', 'citethis_manager', 'citethis_manage');
+			add_settings_field('citethis_institution', 'Institution associated with this blog', 'citethis_institution_entry', 'citethis_manager', 'citethis_manage');
+/**	
 		add_settings_section('citethis_stylelist', 'Tags for Citation Styles', 'citethis_styles_text', 'citethis_styles');
-			add_settings_section('citethis_style_list', ' ', 'citethis_stylelister', 'citethis_styles', 'citethis_stylelist');
-		
+			add_settings_field('citethis_style_list', 'List of current citation styles.', 'citethis_stylelister', 'citethis_styles', 'citethis_stylelist');
+			
 		add_settings_section('citethis_general', 'General Options', 'citethis_general_text', 'citethis_generals');
 			add_settings_section('citethis_single_mode', 'Providing method in Single Post Mode', 'citethis_singlemode_gen', 'citethis_generals', 'citethis_general');
 			add_settings_section('citethis_single_setting', 'Settings for Single Post Mode', 'citethis_singlesetting_gen', 'citethis_generals', 'citethis_general');
@@ -71,7 +86,7 @@
 		add_settings_section('citethis_citation', 'Citation Styles', 'citethis_citation_text', 'citethis_citations');	
 			add_settings_section('citethis_citations_set', ' ', 'citethis_citations_gen', 'citethis_citations', 'citethis_citation');
 			add_settings_section('citethis_button_set', ' ', 'citethis_buttonset_gen', 'citethis_citations', 'citethis_citation');
-			
+**/			
 	}
 	
 	function citethis_manage_text() {
@@ -80,12 +95,35 @@
 	
 	}
 	
+	function citethis_reset_gen() {
+	?>
+		 
+			<?php wp_nonce_field('citethis-reset'); ?>
+			<p class="submit">
+				<input name="reset" type="submit" value="Reset" />
+			</p>
+		
+	<?php
+	}
+	
+	function citethis_institution_entry() {
+	$gOptions = get_option('citethis_options');
+	?>
+		<input type="text" id="citethis_institution" name="citethis_options[institution]" size="20" value="<?php if (!empty($gOptions['institution'])) esc_attr_e($gOptions['institution']); ?>"/>
+	<?php
+	}
+	
+	function citethis_styles_text() {
+	
+		echo '<p>The keys for use in creating files.</p>';
+	
+	}	
+	
 	function citethis_stylelister() {
 	
 		?>
 		
-            <fieldset id="tagsCitationStyles" class="dbx-box">
-                <h3 class="dbx-handle">Tags for Citation Styles</h3>
+           <!-- <fieldset id="tagsCitationStyles" class="dbx-box"> -->
                     <div class="dbx-content">
                         <dl>
                         <dt>%pagename%</dt>
@@ -110,7 +148,7 @@
                         <dd>Display &#39; (single quote)</dd>
                         </dl>
                     </div>
-            </fieldset>			
+            <!-- </fieldset> -->			
 		
 		<?php
 	
@@ -183,5 +221,17 @@
 		echo '<link rel="stylesheet" href="' . get_bloginfo('wpurl') . '/wp-content/plugins/CiteThis/OptionsPage.css" type="text/css"/>';
     }
 	// Add JS and stylesheet
+	
+	//Validate the input.
+	function citethis_options_validate($input) 
+	{
+	
+		$gOptions['institution'] = trim($input['institution']);
+		//die( preg_match( '!\w!i', $newinput['syndicate'] ) );
+		if(!preg_match('/^[-_\w\/]+$/i', $gOptions['institution'])) {
+			$gOptions['institution'] = '';
+		}
+	
+	}
 
 ?>

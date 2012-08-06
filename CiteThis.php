@@ -32,7 +32,7 @@ Author URI: http://www.livibetter.com/
  */
 
 require_once('libCiteThis.php');
-require_once('OptionsPage.php');
+require_once('OptionsPage-v2.php');
 
 function GetCitationsBlockStaticHTML($post, $styles) {
     $details = GetDetails($post);
