@@ -92,6 +92,16 @@
 		
 		return $gOptions;
 	
-	}	
+	}
+
+	function citethis_admin_enqueue_scripts( $hook_suffix ) {
+
+
+		wp_enqueue_style( 'citethis-theme-options', get_bloginfo('wpurl') . '/wp-content/plugins/CiteThis/OptionsPage.css', false, '1.0' );
+
+		wp_enqueue_script('interface', plugins_url('interface.js',__FILE__), array('jquery') );
+
+	}
+	add_action( 'admin_print_styles-settings_page_citethis', 'citethis_admin_enqueue_scripts' );	 //not sure about this hook yet. 	
 
 ?>
