@@ -312,7 +312,7 @@ function ResetCitationStyles(form) {
 <?php
     }
 function CTAddOptionsJS() {
-    wp_enqueue_script('interface', plugins_url('interfaceOld.js',__FILE__), array('jquery') );
+    wp_print_scripts(array('interface'));
     }
 function CTAddOptionsStyle() {
     echo '<link rel="stylesheet" href="' . get_bloginfo('wpurl') . '/wp-content/plugins/CiteThis/OptionsPage.css" type="text/css"/>';

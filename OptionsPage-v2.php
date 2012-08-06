@@ -84,10 +84,13 @@
 	function citethis_options_validate($input) 
 	{
 		$gOptions = get_option('citethis_options');
-		$gOptions['institution'] = trim($input['institution']);
-		//die( preg_match( '!\w!i', $newinput['syndicate'] ) );
-		if(!preg_match('/^[-_\w\/]+$/i', $gOptions['institution'])) {
-			$gOptions['institution'] = '';
+		foreach ($gOptions as $optName => $option){
+		
+			$gOptions[$optName] = trim($input[$optName]);
+			if(!preg_match('/^[-_\w\/]+$/i', $option)) {
+				$gOptions[$optName] = '';
+			}
+		
 		}
 		
 		return $gOptions;
@@ -103,5 +106,6 @@
 
 	}
 	add_action( 'admin_print_styles-settings_page_citethis', 'citethis_admin_enqueue_scripts' );	 //not sure about this hook yet. 	
+
 
 ?>
