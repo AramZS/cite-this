@@ -67,7 +67,7 @@
 		add_settings_section('citethis_manage', 'Manage Cite This', 'citethis_manage_text', 'citethis_manager');
 			//The first entry in the manage section of the admin page.
 			//The id for the reset button, The reset button label, the function to generate the reset button, the settings section call, the settings section name
-			add_settings_field('citethis_reset_button', 'Reset Settings', 'citethis_reset_gen', 'citethis_manager', 'citethis_manage');
+			//add_settings_field('citethis_reset_button', 'Reset Settings', 'citethis_reset_gen', 'citethis_manager', 'citethis_manage');
 			add_settings_field('citethis_institution_field', 'Institution associated with this blog', 'citethis_institution_entry', 'citethis_manager', 'citethis_manage');		
 	}
 	
@@ -77,14 +77,14 @@
 	
 	}
 	
-	function citethis_reset_gen() {
+/**	function citethis_reset_gen() {
 	?>
 		 
 
 		
 	<?php
 	}
-	
+**/	
 	function citethis_institution_entry() {
 		$gOptions = get_option('citethis_options');
 		?>
