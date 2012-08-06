@@ -83,16 +83,20 @@
 	//Validate the input.
 	function citethis_options_validate($input) 
 	{
+		//print_r($input);
+		
 		$gOptions = get_option('citethis_options');
 		foreach ($gOptions as $optName => $option){
 		
 			$gOptions[$optName] = trim($input[$optName]);
-			if(!preg_match('/^[-_\w\/]+$/i', $option)) {
+			//print_r($gOptions[$optName]);
+			if(!preg_match('/^[-_\w\/]+$/i', $gOptions[$optName])) {
 				$gOptions[$optName] = '';
 			}
 		
 		}
 		
+		//die();
 		return $gOptions;
 	
 	}
