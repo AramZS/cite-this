@@ -68,7 +68,26 @@
 			//The first entry in the manage section of the admin page.
 			//The id for the reset button, The reset button label, the function to generate the reset button, the settings section call, the settings section name
 			//add_settings_field('citethis_reset_button', 'Reset Settings', 'citethis_reset_gen', 'citethis_manager', 'citethis_manage');
-			add_settings_field('citethis_institution_field', 'Institution associated with this blog', 'citethis_institution_entry', 'citethis_manager', 'citethis_manage');		
+			add_settings_field('citethis_institution_field', 'Institution associated with this blog', 'citethis_institution_entry', 'citethis_manager', 'citethis_manage');
+/**	
+		add_settings_section('citethis_stylelist', 'Tags for Citation Styles', 'citethis_styles_text', 'citethis_styles');
+			add_settings_field('citethis_style_list', 'List of current citation styles.', 'citethis_stylelister', 'citethis_styles', 'citethis_stylelist');
+			
+		add_settings_section('citethis_general', 'General Options', 'citethis_general_text', 'citethis_generals');
+			add_settings_section('citethis_single_mode', 'Providing method in Single Post Mode', 'citethis_singlemode_gen', 'citethis_generals', 'citethis_general');
+			add_settings_section('citethis_single_setting', 'Settings for Single Post Mode', 'citethis_singlesetting_gen', 'citethis_generals', 'citethis_general');
+			
+			add_settings_section('citethis_multi_mode', 'Providing method in Multi-Post Mode', 'citethis_multimode_gen', 'citethis_generals', 'citethis_general');
+			add_settings_section('citethis_multi_setting', 'Settings for Multi-Post Mode', 'citethis_multisetting_gen', 'citethis_generals', 'citethis_general');
+			
+			add_settings_section('citethis_widget_setting', 'Settings for Widget Mode', 'citethis_widgetsetting_gen', 'citethis_generals', 'citethis_general');
+			
+			add_settings_section('citethis_button_set', ' ', 'citethis_buttonset_gen', 'citethis_manager', 'citethis_manage');
+		
+		add_settings_section('citethis_citation', 'Citation Styles', 'citethis_citation_text', 'citethis_citations');	
+			add_settings_section('citethis_citations_set', ' ', 'citethis_citations_gen', 'citethis_citations', 'citethis_citation');
+			add_settings_section('citethis_button_set', ' ', 'citethis_buttonset_gen', 'citethis_citations', 'citethis_citation');
+**/					
 	}
 	
 	function citethis_manage_text() {
@@ -91,6 +110,93 @@
 			<input type="text" id="citethis_institution_field" name="citethis_options[institution]" size="20" value="<?php if (!empty($gOptions['institution'])) esc_attr_e($gOptions['institution']); ?>"/>
 		<?php
 	}
+	
+	
+	function citethis_stylelister() {
+	
+		?>
+		
+           <!-- <fieldset id="tagsCitationStyles" class="dbx-box"> -->
+                    <div class="dbx-content">
+                        <dl>
+                        <dt>%pagename%</dt>
+                        <dd>The post title.</dd>
+                        <dt>%author%</dt>
+                        <dd>Name of post's author.</dd>
+                        <dt>%publisher%</dt>
+                        <dd>This blog's name.</dd>
+                        <dt>%institution%</dt>
+                        <dd>Institution associated with this blog.</dd>
+                        <dt>%date:format%</dt>
+                        <dd>Published date or last updated date. <a href="http://www.php.net/date">format</a></dd>
+                        <dt>%retdate:format%</dt>
+                        <dd>Requesting date. <a href="http://www.php.net/date">format</a></dd>
+                        <dt>%permalink%</dt>
+                        <dd>URI to the post.</dd>
+                        <dt>&amp;lt;</dt>
+                        <dd>Display &lt;</dd>
+                        <dt>&amp;gt;</dt>
+                        <dd>Display &gt;</dd>
+                        <dt>&amp;#39;</dt>
+                        <dd>Display &#39; (single quote)</dd>
+                        </dl>
+                    </div>
+            <!-- </fieldset> -->			
+		
+		<?php
+	
+	}
+	
+	function add_jquery() {
+		?>	
+		<script type="text/javascript">
+			//<![CDATA[
+		jQuery('#citationStyles').Sortable({
+			accept : 'citation',
+			handle : '.handle',
+			opacity: 	0.5,
+			fit :	false
+			})
+
+		function RemoveCitation(citation){
+			jQuery('#'+citation.id).remove();
+			}
+
+		function AddCitation(){
+			var id;
+			do {
+				id = 'citation-' + Math.round(10000*Math.random()).toString();
+			} while (jQuery('#'+id).size()>0);
+			
+			var newCitation = '<div class="citation" id="' + id + '">\n' +
+							  '<span class="handle">&#11021;<\/span>\n' +
+							  '<select name="' + id + '-show"><option value="false">Hide<\/option><option selected="selected" value="true" >Show<\/option><\/select>\n' +
+							  '<input name="' + id + '-id" type="text" size="10" value=""\/>\n' +
+							  '<input name="' + id + '-name" type="text" size="10" value=""\/>\n' +
+							  '<input name="' + id + '-styleURI" type="text" size="30" value=""\/>\n' +
+							  '<input name="' + id + '-style" type="text" size="30" value=""\/>\n' +
+							  '<input type="button" value="Remove" onclick="RemoveCitation(this.parentNode)"\/>\n' +
+							  '<\/div>';
+			jQuery('#citationStyles')
+				.append(newCitation)
+				.SortableAddItem(document.getElementById(id));
+			}
+			
+		function SubmitCitationStyles(form) {
+			var serial = jQuery.SortSerialize('citationStyles');
+			form.updateCitationStyles.value = 'Save';
+			form.order.value = serial.o['citationStyles'].join(',');
+			form.submit();
+			}
+		function ResetCitationStyles(form) {
+			form.updateCitationStyles.value = 'Reset';
+			form.submit();
+			}
+			//]]>
+	</script>
+			<?php 
+	}
+	
 
 	//Validate the input.
 	function citethis_options_validate($input) 
