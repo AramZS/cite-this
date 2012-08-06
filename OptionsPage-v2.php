@@ -11,6 +11,16 @@
 	//create and display the options administration page. 
 	function citethis_options_page() {
 	
+		if ( 'reset' == $_REQUEST['action'] ) {
+			//protect against request forgery
+			check_admin_referer('citethis-reset');
+			//reset to default the options
+			//This does not work, but I'll build a new function to set the defaults. 
+			$gOptions = GetDefaultGeneralOptions();
+			$citations = GetDefaultCitationStyles();
+			 echo '<div id="message" class="updated fade"><p>All options are reset!</p></div>';
+		}		
+	
 		?>
 		
 			<div>
@@ -33,24 +43,18 @@
 					<br />
 					<input name="Submit" type="submit" value="<?php esc_attr_e('Save Changes'); ?>" />
 				</form>
-				
+				<form method="post">		
+				<?php wp_nonce_field('citethis-reset'); ?>
+					<p class="submit">
+						<input name="reset" type="submit" value="Reset" />
+						<input type="hidden" name="action" value="reset" />
+					</p>
+				</form>	
 				<p>Origonally created by Yu-Jie Lin. Updated by Aram Zucker-Scharff</p>
 			</div>
 		
 		<?php
-/**		
-		if ( 'reset' == $_REQUEST['action'] ) {
-			//protext against request forgery
-			check_admin_referer('citethis-reset');
-			//delete the options
-			foreach ($gOptions as $value) {
-				delete_option( $value['id'] ); }
-				
-				header("Location: options-general.php?page=citethis&reset=true");
-				die;
-				
-		}
-**/	
+
 	}
 	
 	//Let's initate the options for this plugin.
@@ -63,7 +67,7 @@
 		add_settings_section('citethis_manage', 'Manage Cite This', 'citethis_manage_text', 'citethis_manager');
 			//The first entry in the manage section of the admin page.
 			//The id for the reset button, The reset button label, the function to generate the reset button, the settings section call, the settings section name
-			//add_settings_field('citethis_reset_button', 'Reset Settings', 'citethis_reset_gen', 'citethis_manager', 'citethis_manage');
+			add_settings_field('citethis_reset_button', 'Reset Settings', 'citethis_reset_gen', 'citethis_manager', 'citethis_manage');
 			add_settings_field('citethis_institution_field', 'Institution associated with this blog', 'citethis_institution_entry', 'citethis_manager', 'citethis_manage');		
 	}
 	
@@ -71,6 +75,14 @@
 	
 		echo '<p>Manage the settings for Cite This</p>';
 	
+	}
+	
+	function citethis_reset_gen() {
+	?>
+		 
+
+		
+	<?php
 	}
 	
 	function citethis_institution_entry() {
